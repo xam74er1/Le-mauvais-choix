@@ -1,0 +1,125 @@
+{
+  "app": {
+    "title": "Le mauvais choix",
+    "subtitle": "Le jeu du mauvais choix",
+    "description": "Créez des réponses trompeuses et votez pour la vraie !"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "create": "Créer une partie",
+    "join": "Rejoindre",
+    "back": "Retour"
+  },
+  "home": {
+    "welcome": "Bienvenue dans Le mauvais choix !",
+    "choose_play": "Choisissez comment vous voulez jouer :",
+    "create_game": "🎮 Créer une partie",
+    "join_game": "🚪 Rejoindre une partie",
+    "how_to_play": "Comment jouer :",
+    "rules": {
+      "1": "Le maître du jeu crée une session et pose des questions",
+      "2": "Les joueurs soumettent de fausses réponses plausibles",
+      "3": "Tout le monde vote pour la réponse qu'il pense correcte",
+      "4": "Les points sont attribués selon les votes reçus pour les fausses réponses",
+      "5": "Répétez avec de nouvelles questions et suivez les scores !"
+    }
+  },
+  "game": {
+    "phases": {
+      "waiting_for_players": "En attente de joueurs...",
+      "question_phase": "Phase de question",
+      "submission_phase": "Soumettez votre fausse réponse",
+      "voting_phase": "Votez pour la bonne réponse",
+      "results_phase": "Résultats du tour"
+    },
+    "actions": {
+      "submit": "Soumettre",
+      "vote": "Voter",
+      "next_round": "Tour suivant",
+      "end_voting": "Terminer le vote",
+      "start_game": "Commencer la partie",
+      "end_game": "Terminer la partie"
+    },
+    "labels": {
+      "session_id": "ID de session",
+      "pseudonym": "Votre nom",
+      "question": "Question",
+      "answer": "Réponse correcte",
+      "fake_answer": "Votre fausse réponse",
+      "players": "Joueurs",
+      "score": "Score",
+      "round": "Tour",
+      "time_remaining": "Temps restant",
+      "playing_as": "Joue en tant que",
+      "game_master": "Maître du jeu",
+      "state": "État"
+    },
+    "notifications": {
+      "player_joined": "{{playerName}} a rejoint la partie",
+      "player_left": "{{playerName}} a quitté la partie",
+      "answer_submitted": "Réponse soumise avec succès !",
+      "vote_recorded": "Vote enregistré !",
+      "round_complete": "Tour terminé !",
+      "game_started": "Partie commencée !",
+      "connection_lost": "Connexion perdue. Reconnexion...",
+      "connection_restored": "Connexion rétablie !",
+      "auto_mode_enabled": "🤖 Mode automatique activé ! Le jeu va maintenant fonctionner automatiquement.",
+      "game_id_copied": "📋 ID de partie copié dans le presse-papiers !"
+    },
+    "errors": {
+      "session_not_found": "Session introuvable",
+      "invalid_session_id": "ID de session invalide",
+      "name_taken": "Ce nom est déjà pris",
+      "connection_failed": "Échec de connexion à la partie",
+      "submission_failed": "Échec de soumission de la réponse"
+    }
+  },
+  "forms": {
+    "placeholders": {
+      "session_id": "Entrez l'ID de session à 6 caractères",
+      "pseudonym": "Entrez votre nom",
+      "question": "Entrez votre question",
+      "answer": "Entrez la réponse correcte",
+      "fake_answer": "Entrez une fausse réponse crédible"
+    },
+    "validation": {
+      "required": "Ce champ est requis",
+      "min_length": "Doit contenir au moins {{count}} caractères",
+      "max_length": "Doit contenir au maximum {{count}} caractères",
+      "invalid_format": "Format invalide"
+    }
+  },
+  "create": {
+    "title": "Créer une nouvelle session de jeu",
+    "description": "En tant que maître du jeu, vous contrôlerez le déroulement du jeu et poserez des questions aux joueurs.",
+    "name_label": "Votre nom (Maître du jeu)",
+    "creating": "Création...",
+    "responsibilities": {
+      "title": "Responsabilités du maître du jeu :",
+      "1": "Poser des questions intéressantes avec les bonnes réponses",
+      "2": "Contrôler le déroulement et le timing du jeu",
+      "3": "Commencer de nouveaux tours après l'affichage des résultats",
+      "4": "Partager le code de session avec les joueurs"
+    }
+  },
+  "join": {
+    "title": "Rejoindre une session de jeu",
+    "description": "Entrez le code de session fourni par le maître du jeu et choisissez votre nom.",
+    "joining": "Connexion...",
+    "how_to_play": {
+      "title": "Comment jouer :",
+      "1": "Attendez que le maître du jeu commence un tour",
+      "2": "Soumettez une fausse réponse qui semble crédible",
+      "3": "Votez pour la réponse que vous pensez correcte",
+      "4": "Gagnez des points quand d'autres votent pour votre fausse réponse"
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "close": "Fermer"
+  }
+}

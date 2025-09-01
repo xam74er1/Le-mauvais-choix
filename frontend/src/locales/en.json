@@ -1,0 +1,125 @@
+{
+  "app": {
+    "title": "Le mauvais choix",
+    "subtitle": "The Wrong Choice Game",
+    "description": "Create deceptive answers and vote on the real one!"
+  },
+  "navigation": {
+    "home": "Home",
+    "create": "Create Game",
+    "join": "Join Game",
+    "back": "Back"
+  },
+  "home": {
+    "welcome": "Welcome to Le mauvais choix!",
+    "choose_play": "Choose how you want to play:",
+    "create_game": "🎮 Create Game",
+    "join_game": "🚪 Join Game",
+    "how_to_play": "How to Play:",
+    "rules": {
+      "1": "Game Master creates a session and poses questions",
+      "2": "Players submit fake answers that look plausible",
+      "3": "Everyone votes on which answer they think is correct",
+      "4": "Points are awarded based on votes received for fake answers",
+      "5": "Repeat with new questions and keep track of scores!"
+    }
+  },
+  "game": {
+    "phases": {
+      "waiting_for_players": "Waiting for players...",
+      "question_phase": "Question Phase",
+      "submission_phase": "Submit your fake answer",
+      "voting_phase": "Vote for the correct answer",
+      "results_phase": "Round Results"
+    },
+    "actions": {
+      "submit": "Submit",
+      "vote": "Vote",
+      "next_round": "Next Round",
+      "end_voting": "End Voting",
+      "start_game": "Start Game",
+      "end_game": "End Game"
+    },
+    "labels": {
+      "session_id": "Session ID",
+      "pseudonym": "Your Name",
+      "question": "Question",
+      "answer": "Correct Answer",
+      "fake_answer": "Your fake answer",
+      "players": "Players",
+      "score": "Score",
+      "round": "Round",
+      "time_remaining": "Time remaining",
+      "playing_as": "Playing as",
+      "game_master": "Game Master",
+      "state": "State"
+    },
+    "notifications": {
+      "player_joined": "{{playerName}} joined the game",
+      "player_left": "{{playerName}} left the game",
+      "answer_submitted": "Answer submitted successfully!",
+      "vote_recorded": "Vote recorded!",
+      "round_complete": "Round complete!",
+      "game_started": "Game started!",
+      "connection_lost": "Connection lost. Reconnecting...",
+      "connection_restored": "Connection restored!",
+      "auto_mode_enabled": "🤖 Automatic mode enabled! The game will now run automatically.",
+      "game_id_copied": "📋 Game ID copied to clipboard!"
+    },
+    "errors": {
+      "session_not_found": "Session not found",
+      "invalid_session_id": "Invalid session ID",
+      "name_taken": "This name is already taken",
+      "connection_failed": "Failed to connect to game",
+      "submission_failed": "Failed to submit answer"
+    }
+  },
+  "forms": {
+    "placeholders": {
+      "session_id": "Enter 6-character session ID",
+      "pseudonym": "Enter your name",
+      "question": "Enter your question",
+      "answer": "Enter the correct answer",
+      "fake_answer": "Enter a believable fake answer"
+    },
+    "validation": {
+      "required": "This field is required",
+      "min_length": "Must be at least {{count}} characters",
+      "max_length": "Must be no more than {{count}} characters",
+      "invalid_format": "Invalid format"
+    }
+  },
+  "create": {
+    "title": "Create New Game Session",
+    "description": "As the game master, you'll control the game flow and pose questions to players.",
+    "name_label": "Your Name (Game Master)",
+    "creating": "Creating...",
+    "responsibilities": {
+      "title": "Game Master Responsibilities:",
+      "1": "Pose interesting questions with correct answers",
+      "2": "Control the game flow and timing",
+      "3": "Start new rounds after results are shown",
+      "4": "Share the session code with players"
+    }
+  },
+  "join": {
+    "title": "Join Game Session",
+    "description": "Enter the session code provided by the game master and choose your name.",
+    "joining": "Joining...",
+    "how_to_play": {
+      "title": "How to Play:",
+      "1": "Wait for the game master to start a round",
+      "2": "Submit a fake answer that looks believable",
+      "3": "Vote on which answer you think is correct",
+      "4": "Earn points when others vote for your fake answer"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close"
+  }
+}
