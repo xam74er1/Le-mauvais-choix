@@ -1,4 +1,5 @@
 import os
+import logging
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -8,6 +9,13 @@ from .models.game_state import GameState
 from .models.questions import question_manager, QuestionSet
 from .services.auto_gm import auto_gm
 from .websocket import WebSocketManager
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Multiplayer Trivia Game API")
 
@@ -78,11 +86,13 @@ async def create_session(request: CreateSessionRequest):
     """Create a new game session"""
     try:
         session = session_manager.create_session(request.game_master_pseudonym)
+        logger.info(f"Created session {session.session_id} for game master {request.game_master_pseudonym}")
         return CreateSessionResponse(
             session_id=session.session_id,
             player_id=session.game_master_id
         )
     except Exception as e:
+        logger.error(f"Failed to create session: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/sessions/{session_id}/join", response_model=JoinSessionResponse)
@@ -90,6 +100,7 @@ async def join_session(session_id: str, request: JoinSessionRequest):
     """Join an existing session"""
     try:
         session, player = session_manager.join_session(session_id, request.pseudonym)
+        logger.info(f"Player {request.pseudonym} joined session {session_id}")
         
         # Notify other players via WebSocket
         await websocket_manager.broadcast_to_session(session_id, {
@@ -122,8 +133,10 @@ async def join_session(session_id: str, request: JoinSessionRequest):
             }
         )
     except ValueError as e:
+        logger.warning(f"Failed to join session {session_id}: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
+        logger.error(f"Error joining session {session_id}: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/sessions/{session_id}/state")
@@ -592,3 +605,13 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str, player_id: s
 @app.get("/")
 async def root():
     return {"message": "Multiplayer Trivia Game API", "status": "running"}
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for monitoring"""
+    return {
+        "status": "healthy",
+        "environment": os.getenv("NODE_ENV", "production"),
+        "cors_origins": os.getenv("CORS_ORIGINS", "*"),
+        "active_sessions": len(session_manager.sessions)
+    }

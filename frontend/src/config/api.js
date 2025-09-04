@@ -18,7 +18,7 @@ const getApiConfig = () => {
   
   return {
     apiUrl: `${protocol}//${host}/api`,
-    wsUrl: `${wsProtocol}//${host}/ws`
+    wsUrl: `${wsProtocol}//${host}`
   };
 };
 

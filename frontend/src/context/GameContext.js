@@ -120,10 +120,11 @@ export function GameProvider({ children }) {
     }
 
     const wsUrl = `${apiConfig.wsUrl}/ws/${sessionId}/${playerId}`;
+    console.log('Connecting to WebSocket:', wsUrl);
     const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
-      console.log('WebSocket connected');
+      console.log('WebSocket connected successfully to:', wsUrl);
       dispatch({ type: 'SET_CONNECTED', payload: true });
     };
 
@@ -149,7 +150,7 @@ export function GameProvider({ children }) {
     };
 
     ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
+      console.error('WebSocket error for URL:', wsUrl, error);
       dispatch({ type: 'SET_ERROR', payload: 'Connection error. Trying to reconnect...' });
     };
 
