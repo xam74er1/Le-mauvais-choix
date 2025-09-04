@@ -10,31 +10,15 @@ services:
     networks:
       - trivia-network
 
-  frontend-build:
+  frontend:
     build: ./frontend
-    command: npm run build
-    volumes:
-      - ./frontend:/app
-    networks:
-      - trivia-network
-
-  frontend-dev:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
     ports:
-      - "3001:3000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+      - "3000:80"   # expose Nginx built image
     depends_on:
       - backend
     networks:
       - trivia-network
-    profiles:
-      - dev
+
 
   nginx:
     image: nginx:alpine
