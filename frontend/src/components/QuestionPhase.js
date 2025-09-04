@@ -43,16 +43,18 @@ function QuestionPhase() {
   };
 
   return (
-    <div>
+    <div className="content-area">
       <div className="phase-indicator">
         🎮 Game Master: Submit Your Question
       </div>
       
-      <div className="card">
-        <h3>Players Ready ({state.players.length})</h3>
-        <ul className="player-list">
+      <div className="content-section">
+        <h3 className="text-heading font-semibold space-element text-primary">
+          Players Ready ({state.players.length})
+        </h3>
+        <div className="grid gap-3">
           {state.players.map((player) => (
-            <li key={player.player_id} className="player-item">
+            <div key={player.player_id} className="player-item">
               <div>
                 <strong>{player.pseudonym}</strong>
                 {player.is_game_master && <span className="game-master">Game Master</span>}
@@ -60,24 +62,32 @@ function QuestionPhase() {
               <div className="score">
                 {state.scores[player.player_id] || 0} pts
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
 
-      <div className="card">
-        <h3>Submit Question & Answer</h3>
-        <p>Pose an interesting question that will challenge players to create believable fake answers.</p>
+      <div className="content-section hero">
+        <h3 className="text-title font-bold space-element">Submit Question & Answer</h3>
+        <p className="text-body space-element" style={{ opacity: 0.9 }}>
+          Pose an interesting question that will challenge players to create believable fake answers.
+        </p>
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="space-y-3">
           <div className="form-group">
-            <label className="label" htmlFor="question">
+            <label className="text-body font-semibold text-inverse space-content block" htmlFor="question">
               Question
             </label>
             <input
               id="question"
               type="text"
-              className="input"
+              className="input text-body"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: 'var(--text-inverse)',
+                borderRadius: 'var(--border-radius-lg)'
+              }}
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="e.g., What is the capital of Australia?"
@@ -87,13 +97,19 @@ function QuestionPhase() {
           </div>
           
           <div className="form-group">
-            <label className="label" htmlFor="correctAnswer">
+            <label className="text-body font-semibold text-inverse space-content block" htmlFor="correctAnswer">
               Correct Answer
             </label>
             <input
               id="correctAnswer"
               type="text"
-              className="input"
+              className="input text-body"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: 'var(--text-inverse)',
+                borderRadius: 'var(--border-radius-lg)'
+              }}
               value={correctAnswer}
               onChange={(e) => setCorrectAnswer(e.target.value)}
               placeholder="e.g., Canberra"
@@ -104,16 +120,24 @@ function QuestionPhase() {
           
           <button 
             type="submit" 
-            className="button"
+            className="button success text-body font-semibold px-xl py-lg"
             disabled={submitting || !question.trim() || !correctAnswer.trim()}
+            style={{
+              backgroundColor: 'var(--accent-success)',
+              borderRadius: 'var(--border-radius-lg)',
+              marginTop: 'var(--space-lg)'
+            }}
           >
             {submitting ? 'Submitting...' : '📤 Submit Question'}
           </button>
         </form>
         
-        <div style={{ marginTop: '20px', padding: '16px', backgroundColor: '#e7f3ff', borderRadius: '6px' }}>
-          <h4>💡 Tips for Good Questions:</h4>
-          <ul>
+        <div className="px-lg py-lg rounded-xl space-element" style={{ 
+          backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+          border: '1px solid rgba(255, 255, 255, 0.2)' 
+        }}>
+          <h4 className="text-subheading font-semibold text-inverse space-content">💡 Tips for Good Questions:</h4>
+          <ul className="text-body text-inverse space-y-3" style={{ opacity: 0.9, paddingLeft: 'var(--space-lg)' }}>
             <li>Choose topics that allow for creative fake answers</li>
             <li>Avoid questions that are too obscure or too obvious</li>
             <li>Consider questions about geography, history, science, or pop culture</li>
@@ -123,9 +147,11 @@ function QuestionPhase() {
       </div>
 
       {/* CSV Upload Section */}
-      <div className="card">
-        <h3>📄 Or Use Questions from CSV</h3>
-        <p>Upload a CSV file with pre-written questions for automatic mode, or continue manually.</p>
+      <div className="content-section">
+        <h3 className="text-heading font-semibold space-element text-primary">📄 Or Use Questions from CSV</h3>
+        <p className="text-body text-secondary space-element">
+          Upload a CSV file with pre-written questions for automatic mode, or continue manually.
+        </p>
         
         {!showCSVUpload ? (
           <div className="flex gap-4">
