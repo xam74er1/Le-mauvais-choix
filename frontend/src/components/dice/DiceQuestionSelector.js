@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import Button from '../common/Button';
+import { apiConfig } from '../../config/api';
 
-const DiceQuestionSelector = ({ sessionId, playerId, onQuestionSelected, disabled = false }) => {
+const DiceQuestionSelector = ({ sessionId, playerId, onQuestionLoaded, disabled = false }) => {
   const [isRolling, setIsRolling] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [editedQuestion, setEditedQuestion] = useState('');
   const [editedAnswer, setEditedAnswer] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
-
-  const API_BASE_URL =
-  process.env.REACT_APP_API_URL || // (recommended) from env variable
-  `${window.location.protocol}//${window.location.hostname}:8000`; // fallback
+  const [isQuestionLoaded, setIsQuestionLoaded] = useState(false);
 
   const rollDice = async () => {
     if (disabled || isRolling) return;
@@ -18,7 +15,7 @@ const DiceQuestionSelector = ({ sessionId, playerId, onQuestionSelected, disable
     setIsRolling(true);
     
     try {
-      const response = await fetch(`${API_BASE_URL}/sessions/${sessionId}/dice-question?player_id=${playerId}`, {
+      const response = await fetch(`${apiConfig.apiUrl}/sessions/${sessionId}/dice-question?player_id=${playerId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,11 +34,16 @@ const DiceQuestionSelector = ({ sessionId, playerId, onQuestionSelected, disable
         setSelectedQuestion(result);
         setEditedQuestion(result.question);
         setEditedAnswer(result.answer);
-        setIsEditing(true);
+        setIsQuestionLoaded(true);
         setIsRolling(false);
         
-        if (onQuestionSelected) {
-          onQuestionSelected(result);
+        // Pass the question data to parent component to fill admin fields
+        if (onQuestionLoaded) {
+          onQuestionLoaded({
+            question: result.question,
+            answer: result.answer,
+            source: 'dice'
+          });
         }
       }, 1000);
 
@@ -52,46 +54,22 @@ const DiceQuestionSelector = ({ sessionId, playerId, onQuestionSelected, disable
     }
   };
 
-  const submitEditedQuestion = async () => {
-    if (!editedQuestion.trim() || !editedAnswer.trim()) {
-      alert('Please fill in both question and answer');
-      return;
-    }
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/sessions/${sessionId}/edit-question?player_id=${playerId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          question: editedQuestion.trim(),
-          answer: editedAnswer.trim(),
-        }),
+  const updateParentFields = () => {
+    // Update parent component fields with edited content
+    if (onQuestionLoaded) {
+      onQuestionLoaded({
+        question: editedQuestion.trim(),
+        answer: editedAnswer.trim(),
+        source: 'dice'
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Failed to submit question');
-      }
-
-      // Reset state after successful submission
-      setSelectedQuestion(null);
-      setEditedQuestion('');
-      setEditedAnswer('');
-      setIsEditing(false);
-
-    } catch (error) {
-      console.error('Error submitting edited question:', error);
-      alert(error.message);
     }
   };
 
-  const cancelEdit = () => {
+  const clearDiceQuestion = () => {
     setSelectedQuestion(null);
     setEditedQuestion('');
     setEditedAnswer('');
-    setIsEditing(false);
+    setIsQuestionLoaded(false);
   };
 
   return (
@@ -121,33 +99,39 @@ const DiceQuestionSelector = ({ sessionId, playerId, onQuestionSelected, disable
         </div>
       )}
 
-      {isEditing && selectedQuestion && (
-        <div className="question-editor card">
+      {isQuestionLoaded && selectedQuestion && (
+        <div className="question-preview card">
           <div className="flex items-center gap-2 mb-4">
-            <span className="question-source dice">🎲 Dice</span>
-            <span className="text-sm text-muted">
-              You can edit this question before presenting it
+            <span className="question-source dice">🎲 Dice Question Loaded</span>
+            <span className="text-sm text-success">
+              ✅ Question loaded into admin fields! You can edit and submit manually.
             </span>
           </div>
 
           <div className="form-group">
-            <label className="label">Question:</label>
+            <label className="label">Preview - Question:</label>
             <textarea
               className="input"
               rows="3"
               value={editedQuestion}
-              onChange={(e) => setEditedQuestion(e.target.value)}
+              onChange={(e) => {
+                setEditedQuestion(e.target.value);
+                updateParentFields();
+              }}
               placeholder="Enter your question..."
             />
           </div>
 
           <div className="form-group">
-            <label className="label">Correct Answer:</label>
+            <label className="label">Preview - Correct Answer:</label>
             <textarea
               className="input"
               rows="2"
               value={editedAnswer}
-              onChange={(e) => setEditedAnswer(e.target.value)}
+              onChange={(e) => {
+                setEditedAnswer(e.target.value);
+                updateParentFields();
+              }}
               placeholder="Enter the correct answer..."
             />
           </div>
@@ -155,18 +139,18 @@ const DiceQuestionSelector = ({ sessionId, playerId, onQuestionSelected, disable
           <div className="flex gap-3 mt-6">
             <Button
               variant="primary"
-              onClick={submitEditedQuestion}
+              onClick={updateParentFields}
               disabled={!editedQuestion.trim() || !editedAnswer.trim()}
               className="flex-1"
             >
-              Submit Question
+              Update Admin Fields
             </Button>
             <Button
               variant="secondary"
-              onClick={cancelEdit}
+              onClick={clearDiceQuestion}
               className="flex-1"
             >
-              Cancel
+              Clear & Roll Again
             </Button>
           </div>
 
@@ -183,9 +167,9 @@ const DiceQuestionSelector = ({ sessionId, playerId, onQuestionSelected, disable
         </div>
       )}
 
-      {!isEditing && !isRolling && (
+      {!isQuestionLoaded && !isRolling && (
         <div className="text-center py-4 text-muted">
-          <p>Click the dice to get a random question that you can edit before presenting to players.</p>
+          <p>Click the dice to get a random question that will be loaded into the admin fields for review and editing.</p>
         </div>
       )}
     </div>

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useGame } from '../context/GameContext';
 import CSVUploader from './csv/CSVUploader';
+import DiceQuestionSelector from './dice/DiceQuestionSelector';
 import Button from './common/Button';
 
 function QuestionPhase() {
   const [question, setQuestion] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
+  const [questionSource, setQuestionSource] = useState('manual');
   const [submitting, setSubmitting] = useState(false);
   const [showCSVUpload, setShowCSVUpload] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -23,11 +25,18 @@ function QuestionPhase() {
       await actions.submitQuestion(question.trim(), correctAnswer.trim());
       setQuestion('');
       setCorrectAnswer('');
+      setQuestionSource('manual');
     } catch (error) {
       // Error handled in context
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleDiceQuestionLoaded = ({ question: diceQuestion, answer: diceAnswer, source }) => {
+    setQuestion(diceQuestion);
+    setCorrectAnswer(diceAnswer);
+    setQuestionSource(source);
   };
 
   const handleCSVUpload = async (result) => {
@@ -67,11 +76,33 @@ function QuestionPhase() {
         </div>
       </div>
 
+      {/* Dice Question Selector */}
+      <div className="content-section">
+        <h3 className="text-heading font-semibold space-element text-primary">🎲 Random Question</h3>
+        <DiceQuestionSelector
+          sessionId={state.sessionId}
+          playerId={state.playerId}
+          onQuestionLoaded={handleDiceQuestionLoaded}
+          disabled={submitting}
+        />
+      </div>
+
       <div className="content-section hero">
         <h3 className="text-title font-bold space-element">Submit Question & Answer</h3>
         <p className="text-body space-element" style={{ opacity: 0.9 }}>
-          Pose an interesting question that will challenge players to create believable fake answers.
+          {questionSource === 'dice' ? 
+            'Review and edit the dice question below, then submit when ready.' :
+            'Pose an interesting question that will challenge players to create believable fake answers.'
+          }
         </p>
+        
+        {questionSource === 'dice' && (
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
+            <p className="text-sm text-blue-700">
+              🎲 <strong>Dice question loaded!</strong> You can edit the question and answer below before submitting.
+            </p>
+          </div>
+        )}
         
         <form onSubmit={handleSubmit} className="space-y-3">
           <div className="form-group">

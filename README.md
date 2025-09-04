@@ -22,12 +22,32 @@ A real-time multiplayer trivia game where a game master poses questions, players
 ### Development Setup
 
 1. Clone the repository
-2. Start the development environment:
+2. **For Production Deployment:**
    ```bash
+   # Windows
+   start-prod.bat
+   
+   # Linux/Mac
+   ./start-prod.sh
+   
+   # Or manually
    docker-compose up --build
    ```
-3. Access the application:
-   - Frontend: http://localhost:3000
+   Access the application at: http://localhost
+
+3. **For Development:**
+   ```bash
+   # Windows
+   start-dev.bat
+   
+   # Linux/Mac  
+   ./start-dev.sh
+   
+   # Or manually
+   docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+   ```
+   Access the application at:
+   - Frontend (Dev): http://localhost:3000
    - Backend API: http://localhost:8000
    - API Documentation: http://localhost:8000/docs
 

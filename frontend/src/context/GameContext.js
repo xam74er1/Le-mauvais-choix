@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { apiConfig } from '../config/api';
 
 const GameContext = createContext();
 
@@ -118,9 +119,7 @@ export function GameProvider({ children }) {
       state.websocket.close();
     }
 
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.hostname}:8000/ws/${sessionId}/${playerId}`;
-
+    const wsUrl = `${apiConfig.wsUrl}/ws/${sessionId}/${playerId}`;
     const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
@@ -217,13 +216,10 @@ export function GameProvider({ children }) {
     }
   };
 
-  const API_BASE_URL =
-  process.env.REACT_APP_API_URL || // (recommended) from env variable
-  `${window.location.protocol}//${window.location.hostname}:8000`; // fallback
   // API helper functions
   const apiCall = async (endpoint, options = {}) => {
     try {
-      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      const response = await fetch(`${apiConfig.apiUrl}${endpoint}`, {
         headers: {
           'Content-Type': 'application/json',
           ...options.headers

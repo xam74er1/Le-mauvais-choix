@@ -1,40 +1,48 @@
+version: '3.8'
+
 services:
   backend:
     build: ./backend
-    expose:
-      - "8000"
-    volumes:
-      - ./backend:/app
     environment:
       - PYTHONPATH=/app
+      - HOST=0.0.0.0
+      - PORT=8000
+      - CORS_ORIGINS=*
+      - NODE_ENV=production
+    expose:
+      - "8000"
     networks:
       - trivia-network
 
   frontend:
     build: ./frontend
     ports:
-      - "3000:80"   # expose Nginx built image
+      - "80:80"
     depends_on:
       - backend
+    environment:
+      - NODE_ENV=production
     networks:
       - trivia-network
 
-
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
+  frontend-dev:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
     ports:
-      - "3000:80"
+      - "3001:3000"
     volumes:
-      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./frontend/dist:/usr/share/nginx/html:ro
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
-      - frontend-build
     networks:
       - trivia-network
+    profiles:
+      - dev
 
 networks:
   trivia-network:
     driver: bridge
-

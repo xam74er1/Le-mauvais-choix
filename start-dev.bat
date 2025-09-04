@@ -3,7 +3,7 @@ echo 🎯 Starting Multiplayer Trivia Game Development Environment
 echo ==================================================
 
 echo 🐳 Building and starting containers...
-docker-compose up --build
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 
 echo 🎮 Game should be available at:
 echo    Frontend: http://localhost:3000

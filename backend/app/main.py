@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -7,26 +8,28 @@ from .models.game_state import GameState
 from .models.questions import question_manager, QuestionSet
 from .services.auto_gm import auto_gm
 from .websocket import WebSocketManager
-import os
 
 app = FastAPI(title="Multiplayer Trivia Game API")
 
-# CORS middleware for development
-allowed_origins = os.getenv("ALLOWED_ORIGINS")
-
-if allowed_origins:
-    # Split by comma so you can define multiple origins
-    origins = [origin.strip() for origin in allowed_origins.split(",")]
+# Dynamic CORS configuration
+cors_origins = os.getenv("CORS_ORIGINS", "*").split(",")
+if cors_origins == ["*"]:
+    # Allow all origins in development or when explicitly set
+    allow_origins = ["*"]
 else:
-    # Default: allow localhost for development
-    origins = [
-        "http://localhost:3000",
-        "http://localhost:3001",
-    ]
+    allow_origins = [origin.strip() for origin in cors_origins]
+
+# Add development origins if in development mode
+if os.getenv("NODE_ENV", "production") == "development":
+    dev_origins = ["http://localhost:3000", "http://localhost:3001"]
+    if allow_origins == ["*"]:
+        allow_origins = dev_origins
+    else:
+        allow_origins.extend(dev_origins)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
