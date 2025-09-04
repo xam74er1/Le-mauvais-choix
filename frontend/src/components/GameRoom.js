@@ -169,21 +169,22 @@ function GameRoom() {
         <div className="content-section">
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="text-xl font-semibold mb-1">
+              <h2 className="text-title font-bold space-content text-primary">
                 {t('game.labels.round')} {state.roundNumber}
               </h2>
-              <p className="text-secondary">
-                {t('game.labels.playing_as')}: <strong>{state.playerName}</strong>
+              <p className="text-body text-secondary">
+                {t('game.labels.playing_as')}: <strong className="text-primary">{state.playerName}</strong>
                 {state.isGameMaster && (
-                  <span className="game-master ml-2">
+                  <span className="px-sm py-xs rounded-lg text-micro font-semibold text-white ml-sm"
+                        style={{ backgroundColor: 'var(--primary)' }}>
                     {t('game.labels.game_master')}
                   </span>
                 )}
               </p>
             </div>
-            <div className="text-right text-secondary">
-              <div>{t('game.labels.players')}: {state.players.length}</div>
-              <div>{t('game.labels.state')}: {t(`game.phases.${state.gameState}`)}</div>
+            <div className="text-right">
+              <div className="text-body font-medium text-primary">{t('game.labels.players')}: {state.players.length}</div>
+              <div className="text-caption text-secondary">{t('game.labels.state')}: {t(`game.phases.${state.gameState}`)}</div>
             </div>
           </div>
         </div>
@@ -193,23 +194,31 @@ function GameRoom() {
       {state.isGameMaster && state.gameState === 'waiting_for_players' && !showAutoSetup && (
         <AnimatedTransition type="slideDown">
           <div className="content-section">
-            <h3 className="text-lg font-semibold mb-4">Game Master Tools</h3>
-            <div className="grid md:grid-cols-2 gap-4">
+            <h3 className="text-heading font-semibold space-element text-primary">Game Master Tools</h3>
+            <div className="grid md:grid-cols-2 gap-lg">
               <button
                 onClick={() => setShowAutoSetup(true)}
-                className="button primary text-left p-4 h-auto"
+                className="text-left px-lg py-xl rounded-xl transition-all hover-lift"
+                style={{
+                  backgroundColor: 'var(--bg-secondary)',
+                  border: '1px solid var(--border-color)',
+                  cursor: 'pointer'
+                }}
               >
                 <div>
-                  <div className="text-lg mb-1">🤖 Automatic Mode</div>
-                  <div className="text-sm opacity-75">
+                  <div className="text-subheading font-semibold text-primary space-content">🤖 Automatic Mode</div>
+                  <div className="text-body text-secondary">
                     Let the system run the game automatically with CSV questions
                   </div>
                 </div>
               </button>
               
-              <div className="content-section p-4">
-                <div className="text-lg mb-2">🎲 Dice Questions</div>
-                <div className="text-sm text-muted mb-3">
+              <div className="px-lg py-xl rounded-xl" style={{
+                backgroundColor: 'var(--bg-secondary)',
+                border: '1px solid var(--border-color)'
+              }}>
+                <div className="text-subheading font-semibold text-primary space-content">🎲 Dice Questions</div>
+                <div className="text-body text-secondary space-element">
                   Get random questions that you can edit before presenting
                 </div>
                 <DiceQuestionSelector

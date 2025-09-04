@@ -3,21 +3,23 @@ import styled from 'styled-components';
 import { AnimationUtils } from '../../utils/animations';
 
 const StyledButton = styled.button`
-  /* Base styles */
+  /* Enhanced base styles */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-6);
+  gap: var(--space-sm);
+  padding: var(--space-content) var(--space-lg);
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius-lg);
   font-size: var(--text-base);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-primary);
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s ease;
   min-height: 44px; /* Touch target */
   min-width: 44px;
+  box-shadow: var(--shadow-xs);
   
   /* Variants */
   ${props => {
@@ -26,15 +28,16 @@ const StyledButton = styled.button`
         return `
           background-color: var(--primary);
           color: var(--text-inverse);
-          box-shadow: var(--shadow-sm);
           
           &:hover:not(:disabled) {
             background-color: var(--primary-dark);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-md);
           }
           
           &:active {
             background-color: var(--primary-dark);
+            transform: translateY(-1px);
             box-shadow: var(--shadow-sm);
           }
         `;
@@ -47,15 +50,19 @@ const StyledButton = styled.button`
           &:hover:not(:disabled) {
             background-color: var(--bg-tertiary);
             border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
           }
         `;
       case 'success':
         return `
-          background-color: var(--success);
+          background-color: var(--accent-success);
           color: var(--text-inverse);
           
           &:hover:not(:disabled) {
-            background-color: #059669;
+            background-color: var(--accent-success-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
           }
         `;
       case 'danger':

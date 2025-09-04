@@ -217,10 +217,13 @@ export function GameProvider({ children }) {
     }
   };
 
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || // (recommended) from env variable
+  `${window.location.protocol}//${window.location.hostname}:8000`; // fallback
   // API helper functions
   const apiCall = async (endpoint, options = {}) => {
     try {
-      const response = await fetch(`http://localhost:8000${endpoint}`, {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         headers: {
           'Content-Type': 'application/json',
           ...options.headers

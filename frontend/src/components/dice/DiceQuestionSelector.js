@@ -8,13 +8,17 @@ const DiceQuestionSelector = ({ sessionId, playerId, onQuestionSelected, disable
   const [editedAnswer, setEditedAnswer] = useState('');
   const [isEditing, setIsEditing] = useState(false);
 
+  const API_BASE_URL =
+  process.env.REACT_APP_API_URL || // (recommended) from env variable
+  `${window.location.protocol}//${window.location.hostname}:8000`; // fallback
+
   const rollDice = async () => {
     if (disabled || isRolling) return;
 
     setIsRolling(true);
     
     try {
-      const response = await fetch(`http://localhost:8000/sessions/${sessionId}/dice-question?player_id=${playerId}`, {
+      const response = await fetch(`${API_BASE_URL}/sessions/${sessionId}/dice-question?player_id=${playerId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +59,7 @@ const DiceQuestionSelector = ({ sessionId, playerId, onQuestionSelected, disable
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/sessions/${sessionId}/edit-question?player_id=${playerId}`, {
+      const response = await fetch(`${API_BASE_URL}/sessions/${sessionId}/edit-question?player_id=${playerId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

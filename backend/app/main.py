@@ -7,13 +7,26 @@ from .models.game_state import GameState
 from .models.questions import question_manager, QuestionSet
 from .services.auto_gm import auto_gm
 from .websocket import WebSocketManager
+import os
 
 app = FastAPI(title="Multiplayer Trivia Game API")
 
 # CORS middleware for development
+allowed_origins = os.getenv("ALLOWED_ORIGINS")
+
+if allowed_origins:
+    # Split by comma so you can define multiple origins
+    origins = [origin.strip() for origin in allowed_origins.split(",")]
+else:
+    # Default: allow localhost for development
+    origins = [
+        "http://localhost:3000",
+        "http://localhost:3001",
+    ]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
