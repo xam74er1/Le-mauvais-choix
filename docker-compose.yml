@@ -27,7 +27,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.dev
     ports:
-      - "3001:3000"
+      - "3001:3000"  # still mapped for dev mode
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -57,3 +57,4 @@ services:
 networks:
   trivia-network:
     driver: bridge
+
